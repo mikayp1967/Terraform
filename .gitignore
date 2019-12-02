@@ -4,3 +4,4 @@ terraform-install/*
 zips/*
 terraform
 .terraform*
+old_files*
