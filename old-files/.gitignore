@@ -1,6 +1,6 @@
 terraform-install*
 terraform-install/*
-*zip
-zips/*
+terraform.zip
 terraform
 .terraform*
+*zip
