@@ -18,18 +18,7 @@ variable "vpc_id" {
 }
 
 variable "subnet_id" {
-  default = ""
-}
-
-variable "subnet_id_a" {
-  default = ""
-}
-
-variable "subnet_id_b" {
-  default = ""
-}
-
-variable "subnet_id_c" {
+  #default = {}
   default = ""
 }
 
