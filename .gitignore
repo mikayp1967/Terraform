@@ -1,7 +1,0 @@
-terraform-install*
-terraform-install/*
-*zip
-zips/*
-terraform
-.terraform*
-old_files*
