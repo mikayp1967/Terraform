@@ -1,2 +1,0 @@
-variable "example_var" {
-}

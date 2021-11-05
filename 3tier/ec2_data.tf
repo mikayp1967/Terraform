@@ -13,7 +13,6 @@ data "aws_ami" "al2" {
   }
 }
 
-
 module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "~> v1.0"
