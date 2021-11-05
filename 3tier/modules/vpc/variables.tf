@@ -12,3 +12,8 @@ variable "subnet_cidr" {
   description = "CIDR range for the subnets"
   default     = []
 }
+
+variable "az_list" {
+    description = "List of AZs"
+    default = []
+}

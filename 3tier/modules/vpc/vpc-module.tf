@@ -3,10 +3,11 @@ resource "aws_vpc" "vpc_module" {
 
 }
 
-resource "aws_subnet" "subnet_a" {
-  availability_zone = "eu-west-2a"
+resource "aws_subnet" "subnets" {
+  count = "${length(var.subnet_cidr)}"
+  availability_zone = "${element(var.az_list, count.index)}"
   vpc_id = "${aws_vpc.vpc_module.id}"
-  cidr_block = "${element(concat(var.subnet_cidr, list("")), 0)}"
+  cidr_block = "${element(concat(var.subnet_cidr, list("")), count.index)}"
   depends_on = ["aws_vpc.vpc_module"]
 }
 
