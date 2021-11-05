@@ -1,4 +1,4 @@
-data "aws_ami" "ubuntu" {
+data "aws_ami" "al2" {
   most_recent = true
   owners      = ["amazon"]
 
@@ -18,11 +18,11 @@ module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "~> v1.0"
 
-  instance_count = 3
+  instance_count = 1
 
   name = "webserver"
 
-  ami                    = "${data.aws_ami.ubuntu.id}"
+  ami                    = "${data.aws_ami.al2.id}"
   instance_type          = "t2.micro"
   key_name               = "AWS1"
   monitoring             = false
