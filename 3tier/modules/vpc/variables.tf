@@ -14,6 +14,6 @@ variable "subnet_cidr" {
 }
 
 variable "az_list" {
-    description = "List of AZs"
-    default = []
+  description = "List of AZs"
+  default     = []
 }

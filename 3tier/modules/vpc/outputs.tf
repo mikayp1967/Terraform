@@ -12,5 +12,3 @@ output "default_security_group_id" {
   description = "The ID of the security group created by default on VPC creation"
   value       = "${element(concat(aws_vpc.vpc_module.*.default_security_group_id, list("")), 0)}"
 }
-
-
