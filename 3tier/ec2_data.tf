@@ -25,8 +25,8 @@ module "ec2_instance" {
   instance_type          = "t2.micro"
   key_name               = "AWS1"
   monitoring             = false
-  subnet_id              = "subnet-01ade349bcda098a1"
-  vpc_security_group_ids = ["sg-0b5f4a1f60a332548"]
+  subnet_id		= "${module.BE_VPC.subnets}"
+  vpc_security_group_ids = ["${module.BE_VPC.default_security_group_id}"]
 
   tags = {
     Terraform   = "true"
