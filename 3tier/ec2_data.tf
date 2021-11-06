@@ -17,7 +17,7 @@ module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "~> v1.0"
 
-  instance_count = 1
+  instance_count = 0
 
   name = "webserver"
 
@@ -25,7 +25,7 @@ module "ec2_instance" {
   instance_type          = "t2.micro"
   key_name               = "AWS1"
   monitoring             = false
-  subnet_id		= "${module.BE_VPC.subnets}"
+  subnet_id              = "${element(module.BE_VPC.subnets,0)}"
   vpc_security_group_ids = ["${module.BE_VPC.default_security_group_id}"]
 
   tags = {
