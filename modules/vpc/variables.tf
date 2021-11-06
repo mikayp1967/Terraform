@@ -17,3 +17,8 @@ variable "az_list" {
   description = "List of AZs"
   default     = []
 }
+
+variable "vpc_name" {
+  description = "VPC name"
+  default     = "Unnamed"
+}
