@@ -5,3 +5,7 @@ variable "example_var" {
 variable "key_name" {
   default = "UNSET"
 }
+
+variable "project" {
+  default = "TF-011 basic-nw"
+}

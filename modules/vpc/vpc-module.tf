@@ -16,6 +16,7 @@ resource "aws_subnet" "subnets" {
 
   tags = {
     Terraform = "true"
-    Name      = "${var.name}"
+    project   = "${var.project}"
+    Name      = "${format("%s-%d",var.name,count.index)}"
   }
 }

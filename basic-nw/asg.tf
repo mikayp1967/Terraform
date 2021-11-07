@@ -11,7 +11,11 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] # Canonical
+  owners = ["099720109477"]
+
+  tags = {
+    Terraform   = "true"
+  }
 }
 
 resource "aws_launch_configuration" "asg_config" {
@@ -24,18 +28,24 @@ resource "aws_launch_configuration" "asg_config" {
   lifecycle {
     create_before_destroy = true
   }
-
 }
 
 resource "aws_autoscaling_group" "webservers" {
   name                 = "terraform-asg-webservers"
   launch_configuration = "${aws_launch_configuration.asg_config.name}"
-  min_size             = 3
-  max_size             = 5
+  min_size             = 0
+  max_size             = 0
 
   lifecycle {
     create_before_destroy = true
   }
 
   vpc_zone_identifier = ["${module.FE_VPC.subnets}"]
+
+
+  tag = {
+   key      ="Project"
+   value = "${var.project}"
+   propagate_at_launch = true
+  }
 }

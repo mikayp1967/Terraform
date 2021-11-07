@@ -22,3 +22,7 @@ variable "vpc_name" {
   description = "VPC name"
   default     = "Unnamed"
 }
+
+variable "project" {
+  default = "UNKNOWN"
+}
