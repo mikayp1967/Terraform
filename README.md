@@ -1,5 +1,9 @@
 # Terraform examples/testing
 
+Changing to have branch TO011 as the Terraform 0.11.15 version of the branch
+Master will be TF12+ versions
+
+
 ## basic-nw (TF 0.11.15)
 
 This is a small project to create a 2-tier network
@@ -15,8 +19,7 @@ Similarly the RDS will have no schema, it's just really a an example of
 building the basic building blocks with terraform 
 
 I've coded this in TF-0.11.15, there's a lot of legacy code around using
-this version. I'll do future projects in newer TF
-
+this version. 
 
 
 ## old-stuff
