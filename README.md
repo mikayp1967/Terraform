@@ -1,5 +1,11 @@
 # Terraform examples/testing
 
+## kube (TF 1.0.6 - random choice I know)
+
+I need a simple kube cluster to start testing on so here it is. 
+
+
+
 ## basic-nw (TF 0.11.15)
 
 This is a small project to create a 2-tier network
