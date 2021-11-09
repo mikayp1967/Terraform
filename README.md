@@ -2,11 +2,18 @@
 
 ## kube (TF 1.0.6 - random choice I know)
 
+All TF1.0 onward code will be on master branch.
+
 I need a simple kube cluster to start testing on so here it is. 
 
 
 
 ## basic-nw (TF 0.11.15)
+
+
+To use this you will need to be on branch TF011 otherwise pointing at modules 
+and stuff won't work. This was just simple junk for the sake of doing some TF0.11 stuff 
+so will likely not see much action
 
 This is a small project to create a 2-tier network
 The public tier will have ASG servers, NGW, IGW etc
