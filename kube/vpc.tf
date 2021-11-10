@@ -1,3 +1,8 @@
+locals {
+  igw_count = var.build_it == "Y" ? 1 : 0
+}
+
+
 module "K8_VPC" {
   source      = "../modules/vpc"
   cidr        = "10.0.10.0/24"
@@ -8,5 +13,4 @@ module "K8_VPC" {
 }
 
 
-# NGW/EIP/IGW removed as no point paying cost just yet
 
