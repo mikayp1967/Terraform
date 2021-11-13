@@ -1,14 +1,13 @@
 # Terraform examples/testing
 
-## kube (TF 1.0.6 - random choice I know)
+## master branch for newer Terraform code/projects
 
-All TF1.0 onward code will be on master branch.
+## kube (TF 1.0.6 - random choice I know, not the first 1.0 version & not bleeding edge...)
 
 I need a simple kube cluster to start testing on so here it is. 
 
 
-
-## basic-nw (TF 0.11.15)
+## TF011 branch - code for Terraform 0.11.15
 
 
 To use this you will need to be on branch TF011 otherwise pointing at modules 

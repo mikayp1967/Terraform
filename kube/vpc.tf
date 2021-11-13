@@ -13,4 +13,14 @@ module "K8_VPC" {
 }
 
 
+# Need to add SG ingress rule allowing 22 on my home net cidr
+
+resource "aws_security_group_rule" "home_net_ingress" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["80.44.0.0/16"]
+  security_group_id = module.K8_VPC.default_security_group_id
+}
 
