@@ -17,6 +17,11 @@ To do:
 * Work the rest out when I've done this
 
 
+## Notes
+
+I have a repo that can create packer builds but that's $$ for storage
+so I will just use user_data on the instances to install stuff. 
+
 Credit where it's due - I ripped the above Kube install stuff (+ some tweaks) from:
 https://adamtheautomator.com/install-kubernetes-ubuntu/
 

@@ -21,6 +21,12 @@ variable "build_it" {
 
 variable "home_net" {
   description = "home network CIDR addresses for SG ingress on SSH"
-  type = list
-  default = ["80.44.0.0/16"]
+  type        = list(any)
+  default     = ["80.44.0.0/32"]
+}
+
+variable "key_bucket" {
+  description = "Bucket name where key for CP-node comms is stored so I can uise CP as jumpbox and login to nodes"
+  type        = string
+  default     = ""
 }
