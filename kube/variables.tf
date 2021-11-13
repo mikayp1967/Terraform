@@ -18,3 +18,9 @@ variable "build_it" {
   type        = string
   default     = "Y"
 }
+
+variable "home_net" {
+  description = "home network CIDR addresses for SG ingress on SSH"
+  type = list
+  default = ["80.44.0.0/16"]
+}

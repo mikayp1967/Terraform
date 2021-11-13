@@ -23,7 +23,7 @@ data "aws_ami" "ubuntu" {
 
 
 module "ec2_instance" {
-  count = var.build_it == "Y" ? 1 : 0
+#  count = var.build_it == "Y" ? 1 : 0
 
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "~> 3.0"
@@ -35,9 +35,33 @@ module "ec2_instance" {
   key_name               = var.key_name
   vpc_security_group_ids = [module.K8_VPC.default_security_group_id]
   subnet_id              = element(module.K8_VPC.subnets, 0)
+  #user_data = "sudo apt-get update"
+  user_data = <<-EOF
+    #!/bin/bash
+    sudo apt-get update
+    sudo hostnamectl set-hostname master-node
+    sudo apt-get install -y apt-transport-https curl
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+    sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+    sudo apt-get update
+    sudo apt-get install -y kubeadm kubelet kubectl
+    kubeadm version && kubelet --version && kubectl version
+  EOF
 
   tags = {
     Terraform = "true"
     Project   = var.project
   }
+}
+
+
+
+resource "aws_eip" "cp_eip" {
+  vpc = true
+  instance = module.ec2_instance.id
+}
+
+
+output "CP_ip" {
+  value = aws_eip.cp_eip.public_ip
 }

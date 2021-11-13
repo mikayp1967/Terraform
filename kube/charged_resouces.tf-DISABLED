@@ -2,14 +2,8 @@
 # Pretty sure there is an easier way but I don't know it - yet!
 
 
-# Internet Gateway
+# Internet Gateway - move to diff file.
 
-resource "aws_internet_gateway" "igw" {
-  vpc_id = module.K8_VPC.vpc_id
-  tags = {
-    Terraform = "true"
-  }
-}
 
 
 
