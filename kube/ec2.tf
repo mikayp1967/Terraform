@@ -21,9 +21,7 @@ data "aws_ami" "ubuntu" {
 
 
 
-
 module "ec2_instance" {
-#  count = var.build_it == "Y" ? 1 : 0
 
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "~> 3.0"
@@ -46,7 +44,9 @@ module "ec2_instance" {
     sudo apt-get update
     sudo apt-get install -y kubeadm kubelet kubectl
     kubeadm version && kubelet --version && kubectl version
+    sudo apt install -y awscli
   EOF
+
 
   tags = {
     Terraform = "true"
