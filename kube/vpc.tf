@@ -15,6 +15,32 @@ module "K8_VPC" {
 
 # Need to add SG ingress rule allowing 22 on my home net cidr
 
+
+
+
+resource "aws_security_group" "K8_VPC_SG" {
+  name = "kube-sg"
+  description = "Kubernetes SG"
+  vpc_id = module.K8_VPC.vpc_id
+  ingress {
+    cidr_blocks = var.home_net
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+  }
+  egress {
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+  }
+  tags = {
+    "Name" = "Kubernetes SG"
+  }
+}
+
+
+
 resource "aws_security_group_rule" "home_net_ingress" {
   type              = "ingress"
   from_port         = 22

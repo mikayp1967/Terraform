@@ -29,6 +29,6 @@ To do:
 I have a repo that can create packer builds but that's $$ for storage
 so I will just use user_data on the instances to install stuff. 
 
-Credit where it's due - I ripped the above Kube install stuff (+ some tweaks) from:
+Credit where it's due - I used the following resources for the kube install scripts:
 https://adamtheautomator.com/install-kubernetes-ubuntu/
-
+https://www.howtoforge.com/setup-a-kubernetes-cluster-on-aws-ec2-instance-ubuntu-using-kubeadm/

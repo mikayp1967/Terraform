@@ -14,10 +14,14 @@ resource "aws_route_table" "igw_rt" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
+  tags = {
+    Terraform = "true"
+    Name = "IGW RT"
+  }
 }
 
-resource "aws_route_table_association" "igw_rta" {
-  subnet_id      = element(module.K8_VPC.subnets, 0)
-  route_table_id = aws_route_table.igw_rt.id
-}
+#resource "aws_route_table_association" "igw_rta" {
+#  subnet_id      = element(module.K8_VPC.subnets, 0)
+#  route_table_id = aws_route_table.igw_rt.id
+#}
 
