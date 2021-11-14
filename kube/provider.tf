@@ -5,6 +5,14 @@ terraform {
       version = "~> 3.0"
     }
   }
+
+  backend "s3" {
+    bucket = "key-store-bucket-390490349038000"
+    key    = "kube-state-files/terraform.tfstate"
+    region = "eu-west-2"
+  }
+
+
 }
 
 # Configure the AWS Provider
