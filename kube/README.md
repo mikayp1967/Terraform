@@ -23,6 +23,15 @@ To do:
 
 * Work the rest out when I've done this
 
+## Issues
+
+Route tables pointed at IGW work for CP or with EIP on the host
+but do not work to go to Node box
+
+Switching to point the route at NGW doesn't work
+
+
+
 
 ## Notes
 
