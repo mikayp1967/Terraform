@@ -74,13 +74,13 @@ resource "aws_iam_instance_profile" "Kube_Node_profile" {
 
 
 
-#resource "aws_eip" "node_eip" {
-  #vpc      = true
-  #instance = module.Node_instance.id
-#}
+resource "aws_eip" "node_eip" {
+  vpc      = true
+  instance = module.Node_instance.id
+}
 
 
-#output "node_ip" {
-  #value = aws_eip.node_eip.public_ip
-#}
+output "node_ip" {
+  value = aws_eip.node_eip.public_ip
+}
 
