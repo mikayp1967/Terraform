@@ -22,7 +22,7 @@ variable "build_it" {
 variable "home_net" {
   description = "home network CIDR addresses for SG ingress on SSH"
   type        = list(any)
-  default     = ["80.44.0.0/32"]
+  default     = [""]
 }
 
 variable "key_bucket" {

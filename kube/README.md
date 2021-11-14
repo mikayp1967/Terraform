@@ -8,12 +8,19 @@ Least networking features etc etc...
 So far I have:
 * basic network
 * 1 "CP" node, just a ubuntu20 box with some kube binaries
+* 1 Node box
 * EIP on CP so no bastion server needed (save $$, this ain't prod)
+* Add an S3 for certs (created outside TF but IAM role created)
+
 
 To do:
-* Add 1+ node instance
-* Might need an S3 for certs
 * Finalise the user_data to install K8s on CP & Node
+* KMS on those S3s
+* kubeadm install is failing - fix that
+* Node is in same az as CP - need to add routes there so diff subnets can talk
+* Node needs to access internet...
+* Role for EC2s is gonna be mesy when I need to add permissions - this can prob wait forever
+
 * Work the rest out when I've done this
 
 
