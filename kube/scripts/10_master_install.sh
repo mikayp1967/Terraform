@@ -26,13 +26,9 @@ sudo cat > /etc/docker/daemon.json << EOF
     "exec-opts": ["native.cgroupdriver=systemd"]
 }
 EOF
-sudo systemctl start docker
+sudo systemctl restart docker
 sudo systemctl enable docker
-
-
 sudo swapoff -a
-
-
 
 
 sudo apt-get install -y apt-transport-https curl
@@ -70,6 +66,7 @@ kubeadm version && kubelet --version && kubectl version
 # This produces the kube connection string and we need that
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all|grep "kubeadm join" > /kube-join-command
 mkdir -p $HOME/.kube
-sudo cp -i /etc/Kubernetes/admin.conf $HOME/.kube/config
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
 
