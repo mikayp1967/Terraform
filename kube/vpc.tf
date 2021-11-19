@@ -2,6 +2,7 @@ locals {
   igw_count = var.build_it == "Y" ? 1 : 0
   az_list     = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
   common_tags = {
+    Terraform = "true"
     Project = var.project
     CreatedDate = timestamp()
   }
@@ -39,9 +40,14 @@ resource "aws_security_group" "K8_VPC_SG" {
     to_port     = 0
     protocol    = "-1"
   }
+  lifecycle {
+    ignore_changes = [
+      tags["CreatedDate"]
+    ]
+  }
   tags = merge(local.common_tags,{
-    "Name" = "Kubernetes SG"
-  },
+      "Name" = "Kubernetes SG"
+    },
   )
 }
 
@@ -75,11 +81,15 @@ resource "aws_subnet" "subnets_priv" {
   cidr_block        = element(concat(var.priv_subnet_cidr, [""]), count.index)
   depends_on        = [module.K8_VPC]
 
-  tags = {
-    Terraform = "true"
-    project   = var.project
-    Name      = format("K8s-priv-SN-%d",count.index)
+  lifecycle {
+    ignore_changes = [
+      tags["CreatedDate"]
+    ]
   }
+  tags = merge(local.common_tags,{
+    "Name"      = format("K8s-priv-SN-%d",count.index)
+    },
+  )
 }
 
 
@@ -89,8 +99,18 @@ resource "aws_route_table" "subnet_priv_rt" {
   vpc_id = module.K8_VPC.vpc_id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.nat_gateway.id
+    nat_gateway_id = aws_nat_gateway.nat_gateway.id
   }
+  lifecycle {
+    ignore_changes = [
+      tags["CreatedDate"]
+    ]
+  }
+  tags =  merge(local.common_tags,{
+      "Name" = "Priv RT"
+    },
+  )
+
 }
 
 resource "aws_route_table_association" "subnet_priv_rta" {
@@ -98,6 +118,5 @@ resource "aws_route_table_association" "subnet_priv_rta" {
   subnet_id      = element(aws_subnet.subnets_priv.*.id, count.index)
   route_table_id = aws_route_table.subnet_priv_rt.id
 }
-
 
 
