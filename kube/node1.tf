@@ -16,9 +16,9 @@ module "Node_instance" {
   key_name               = var.key_name
   vpc_security_group_ids = [module.K8_VPC.default_security_group_id]
   #subnet_id              = element(module.K8_VPC.subnets, 0)
-  subnet_id              = aws_subnet.subnets_priv.0.id
-  iam_instance_profile   = aws_iam_instance_profile.Kube_Node_profile.name
-  user_data              = file("scripts/90_node_install.sh")
+  subnet_id            = aws_subnet.subnets_priv.0.id
+  iam_instance_profile = aws_iam_instance_profile.Kube_Node_profile.name
+  user_data            = file("scripts/90_node_install.sh")
 
 
   tags = {

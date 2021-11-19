@@ -1,9 +1,9 @@
 locals {
   igw_count = var.build_it == "Y" ? 1 : 0
-  az_list     = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
+  az_list   = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
   common_tags = {
-    Terraform = "true"
-    Project = var.project
+    Terraform   = "true"
+    Project     = var.project
     CreatedDate = timestamp()
   }
 }
@@ -45,8 +45,8 @@ resource "aws_security_group" "K8_VPC_SG" {
       tags["CreatedDate"]
     ]
   }
-  tags = merge(local.common_tags,{
-      "Name" = "Kubernetes SG"
+  tags = merge(local.common_tags, {
+    "Name" = "Kubernetes SG"
     },
   )
 }
@@ -74,7 +74,7 @@ resource "aws_security_group_rule" "local_net_ingress" {
 # I made a vpc module basically for the sake of making a module - seems so dumb now...
 
 resource "aws_subnet" "subnets_priv" {
-  count             = length(var.priv_subnet_cidr)
+  count = length(var.priv_subnet_cidr)
 
   availability_zone = element(local.az_list, count.index)
   vpc_id            = module.K8_VPC.vpc_id
@@ -86,8 +86,8 @@ resource "aws_subnet" "subnets_priv" {
       tags["CreatedDate"]
     ]
   }
-  tags = merge(local.common_tags,{
-    "Name"      = format("K8s-priv-SN-%d",count.index)
+  tags = merge(local.common_tags, {
+    "Name" = format("K8s-priv-SN-%d", count.index)
     },
   )
 }
@@ -98,7 +98,7 @@ resource "aws_subnet" "subnets_priv" {
 resource "aws_route_table" "subnet_priv_rt" {
   vpc_id = module.K8_VPC.vpc_id
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.nat_gateway.id
   }
   lifecycle {
@@ -106,15 +106,15 @@ resource "aws_route_table" "subnet_priv_rt" {
       tags["CreatedDate"]
     ]
   }
-  tags =  merge(local.common_tags,{
-      "Name" = "Priv RT"
+  tags = merge(local.common_tags, {
+    "Name" = "Priv RT"
     },
   )
 
 }
 
 resource "aws_route_table_association" "subnet_priv_rta" {
-  count = length(var.priv_subnet_cidr)
+  count          = length(var.priv_subnet_cidr)
   subnet_id      = element(aws_subnet.subnets_priv.*.id, count.index)
   route_table_id = aws_route_table.subnet_priv_rt.id
 }
