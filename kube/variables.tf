@@ -30,3 +30,15 @@ variable "key_bucket" {
   type        = string
   default     = ""
 }
+
+variable "priv_subnet_cidr" {
+  description = "CIDR blocks for private subnets"
+  type        = list(string)
+  default     = ["10.0.11.0/24", "10.0.12.0/24", "10.0.13.0/24"]
+}
+
+variable "aws_region" {
+  description = "Region to build in"
+  type        = string
+  default     = "eu-west-1"
+}

@@ -21,7 +21,7 @@ resource "aws_route_table" "igw_rt" {
   }
   tags = {
     Terraform = "true"
-    Name = "IGW RT"
+    Name      = "IGW RT"
   }
 }
 
