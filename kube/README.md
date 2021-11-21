@@ -8,28 +8,22 @@ Least networking features etc etc...
 So far I have:
 * basic network
 * 1 "CP" node, just a ubuntu20 box with some kube binaries
-* 1 Node box
+* 1 Node box in "private" SN
 * EIP on CP so no bastion server needed (save $$, this ain't prod)
 * Add an S3 for certs (created outside TF but IAM role created)
 * node should have external access now
 
 
 To do:
-* Finalise the user_data to install K8s on CP & Node
+* Finalise the user_data to install K8s on CP & Node (need to try spinning it up, should just be join string)
 * KMS on those S3s
-* kubeadm install is failing - Wow took ages, I think it's docker config and needs restart not start
-* Node is in same az as CP - need to add routes there so diff subnets can talk
-* Role for EC2s is gonna be mesy when I need to add permissions - this can prob wait forever
+* Role for EC2s is gonna be messy when I need to add permissions - this can prob wait forever
 
 * Work the rest out when I've done this
 
 ## Issues
 
-Route tables pointed at IGW work for CP or with EIP on the host
-but do not work to go to Node box
-
-Switching to point the route at NGW doesn't work
-
+No real idea how I'll scale nodes up - but I need to read up on that anyway
 
 
 
