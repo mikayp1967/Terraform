@@ -69,12 +69,21 @@ kubeadm version && kubelet --version && kubectl version
 
 
 # This produces the kube connection string and we need that
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all > /kube-join-command
+#sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all > /kube-join-command
+sudo kubeadm init --pod-network-cidr=192.168.0.0/24 --ignore-preflight-errors=all > /kube-join-command
 
 sudo mkdir -p ~kubeuser/.kube
 sudo cp -i /etc/kubernetes/admin.conf ~kubeuser/.kube/config
 sudo chown kubeuser:kubegroup ~kubeuser/.kube/config
 
-# Add kubeuser to admin group (for sudo)
+# Give kubeuser sudo
 sudo usermod -a -G admin kubeuser
+echo "kubeuser        ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# Install Calico
+curl https://docs.projectcalico.org/manifests/calico.yaml -O
+mv calico.yaml ~kubeuser/calico.yaml
+sudo chown  kubeuser:kubegroup ~kubeuser/calico.yaml
+# Changed pod network to 192... on kubeadm init so no need to edit it in the file...
+sudo su - kubeuser kubectl apply -f calico.yaml
 

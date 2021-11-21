@@ -67,3 +67,5 @@ kubeadm version && kubelet --version && kubectl version
 
 # Add kubeuser to admin group (for sudo)
 sudo usermod -a -G admin kubeuser
+echo "kubeuser        ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
