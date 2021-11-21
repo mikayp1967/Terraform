@@ -69,9 +69,12 @@ kubeadm version && kubelet --version && kubectl version
 
 
 # This produces the kube connection string and we need that
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all|grep "kubeadm join" > /kube-join-command
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all > /kube-join-command
 
+sudo mkdir -p ~kubeuser/.kube
+sudo cp -i /etc/kubernetes/admin.conf ~kubeuser/.kube/config
+sudo chown kubeuser:kubegroup ~kubeuser/.kube/config
+
+# Add kubeuser to admin group (for sudo)
+sudo usermod -a -G admin kubeuser
 

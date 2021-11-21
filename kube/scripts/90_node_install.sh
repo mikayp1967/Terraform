@@ -2,7 +2,7 @@
 # user_data for CP master node
 
 sudo apt-get update
-sudo hostnamectl set-hostname master-node
+sudo hostnamectl set-hostname node1
 sudo apt install net-tools
 
 
@@ -65,4 +65,5 @@ sudo chmod 644 ~kubeuser/.ssh/id_rsa.pub
 sudo apt-get install -y kubeadm kubelet kubectl kubernetes-cni
 kubeadm version && kubelet --version && kubectl version
 
-
+# Add kubeuser to admin group (for sudo)
+sudo usermod -a -G admin kubeuser
