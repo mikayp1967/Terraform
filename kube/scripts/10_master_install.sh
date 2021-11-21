@@ -3,7 +3,7 @@
 
 sudo apt-get update
 sudo hostnamectl set-hostname master-node
-sudo apt install net-tools
+sudo apt install -y net-tools sysstat
 
 
 # Install docker
@@ -86,4 +86,3 @@ mv calico.yaml ~kubeuser/calico.yaml
 sudo chown  kubeuser:kubegroup ~kubeuser/calico.yaml
 # Changed pod network to 192... on kubeadm init so no need to edit it in the file...
 sudo su - kubeuser kubectl apply -f calico.yaml
-

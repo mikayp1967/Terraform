@@ -3,7 +3,7 @@
 
 sudo apt-get update
 sudo hostnamectl set-hostname node1
-sudo apt install net-tools
+sudo apt install -y net-tools sysstat
 
 
 # Install docker
