@@ -18,7 +18,6 @@ echo \
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 # CE-VERS=$(apt-cache madison docker-ce|head -1|awk '{print $3}')
-sudo usermod -a -G docker kubeuser
 sudo usermod -a -G docker ubuntu
 # Change cgroups config        https://stackoverflow.com/questions/52119985/kubeadm-init-shows-kubelet-isnt-running-or-healthy
 sudo cat > /etc/docker/daemon.json << EOF
@@ -56,6 +55,7 @@ sudo mkdir ~kubeuser/.ssh
 sudo aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa.pub ~kubeuser/.ssh/authorized_keys
 #sudo aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa ~kubeuser/.ssh/id_rsa
 sudo chown -R kubeuser:kubegroup ~kubeuser/.ssh
+sudo usermod -a -G docker kubeuser
 sudo chmod 700 ~kubeuser/.ssh
 sudo chmod 600 ~kubeuser/.ssh/*
 sudo chmod 644 ~kubeuser/.ssh/id_rsa.pub
