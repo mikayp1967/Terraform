@@ -3,7 +3,7 @@
 
 sudo apt-get update
 sudo hostnamectl set-hostname master-node
-sudo apt install net-tools
+sudo apt install -y net-tools sysstat
 
 
 # Install docker
@@ -18,7 +18,6 @@ echo \
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 # CE-VERS=$(apt-cache madison docker-ce|head -1|awk '{print $3}')
-sudo usermod -a -G docker kubeuser
 sudo usermod -a -G docker ubuntu
 # Change cgroups config        https://stackoverflow.com/questions/52119985/kubeadm-init-shows-kubelet-isnt-running-or-healthy
 sudo cat > /etc/docker/daemon.json << EOF
@@ -54,6 +53,7 @@ sudo groupadd -g 1200 kubegroup
 sudo useradd -g 1200 -u 1200 -d /home/kubeuser -m -s /bin/bash kubeuser
 sudo mkdir ~kubeuser/.ssh
 sudo aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa ~kubeuser/.ssh/id_rsa
+sudo usermod -a -G docker kubeuser
 sudo chown -R kubeuser:kubegroup ~kubeuser/.ssh
 sudo chmod 700 ~kubeuser/.ssh
 sudo chmod 600 ~kubeuser/.ssh/id_rsa
@@ -69,9 +69,27 @@ kubeadm version && kubelet --version && kubectl version
 
 
 # This produces the kube connection string and we need that
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all|grep "kubeadm join" > /kube-join-command
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
+#sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all > /kube-join-command
+sudo kubeadm init --pod-network-cidr=192.168.0.0/24 --ignore-preflight-errors=all > /kube-join-command
 
+sudo mkdir -p ~kubeuser/.kube
+sudo cp -i /etc/kubernetes/admin.conf ~kubeuser/.kube/config
+sudo chown kubeuser:kubegroup ~kubeuser/.kube/config
+
+# Give kubeuser sudo
+sudo usermod -a -G admin kubeuser
+echo "kubeuser        ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# Install Calico
+curl https://docs.projectcalico.org/manifests/calico.yaml -O
+mv calico.yaml ~kubeuser/calico.yaml
+sudo chown  kubeuser:kubegroup ~kubeuser/calico.yaml
+# Changed pod network to 192... on kubeadm init so no need to edit it in the file...
+sudo su - kubeuser -c "kubectl apply -f calico.yaml"
+
+# Copy kube config file over (should make new one but meh...) and need to find the IP for it doh!
+# Need to add something here to detect the node is up first.... but a sleep 60 should work for now
+sleep 60
+ssh kubeuser@10.0.11.36 mkdir .kube
+scp .kube/config kubeuser@10.0.11.36:~/.kube/config
 

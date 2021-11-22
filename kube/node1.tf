@@ -74,5 +74,9 @@ resource "aws_iam_instance_profile" "Kube_Node_profile" {
 }
 
 
+output "node_IP" {
+  description = "Private IP of node - so I can ssh in"
+  value       = module.Node_instance.private_ip
+}
 
 
