@@ -65,6 +65,11 @@ resource "aws_iam_role" "CP_IAM_S3" {
           Effect = "Allow"
           #Resource = "arn:aws:s3:::key-store-bucket-390490349038000/*"
           Resource = format("arn:aws:s3:::%s/*", var.key_bucket)
+        },
+        {
+          Action = ["ec2:Describe*"]
+          Effect = "Allow"
+          Resource = "*"
         }
       ]
     })
