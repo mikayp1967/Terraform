@@ -85,4 +85,11 @@ curl https://docs.projectcalico.org/manifests/calico.yaml -O
 mv calico.yaml ~kubeuser/calico.yaml
 sudo chown  kubeuser:kubegroup ~kubeuser/calico.yaml
 # Changed pod network to 192... on kubeadm init so no need to edit it in the file...
-sudo su - kubeuser kubectl apply -f calico.yaml
+sudo su - kubeuser -c "kubectl apply -f calico.yaml"
+
+# Copy kube config file over (should make new one but meh...) and need to find the IP for it doh!
+# Need to add something here to detect the node is up first.... but a sleep 60 should work for now
+sleep 60
+ssh kubeuser@10.0.11.36 mkdir .kube
+scp .kube/config kubeuser@10.0.11.36:~/.kube/config
+
