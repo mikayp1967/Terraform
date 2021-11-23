@@ -3,7 +3,7 @@
 
 sudo apt-get update
 sudo hostnamectl set-hostname master-node
-sudo apt install -y net-tools sysstat
+sudo apt install -y net-tools sysstat jq
 
 
 # Install docker
@@ -88,8 +88,10 @@ sudo chown  kubeuser:kubegroup ~kubeuser/calico.yaml
 sudo su - kubeuser -c "kubectl apply -f calico.yaml"
 
 # Copy kube config file over (should make new one but meh...) and need to find the IP for it doh!
-# Need to add something here to detect the node is up first.... but a sleep 60 should work for now
+NODE_IP=$(aws ec2 describe-instances --filters Name=tag:Name,Values=NODE1|jq '.Reservations[].Instances[0].PrivateIpAddress')
+# Test if node is up and running yet - bodge for now
+# aws ec2 describe-instances --filters Name=tag:Name,Values=NODE1|jq '.Reservations[].Instances[0].State.Name'
 sleep 60
-ssh kubeuser@10.0.11.36 mkdir .kube
-scp .kube/config kubeuser@10.0.11.36:~/.kube/config
+ssh kubeuser@${NODE_IP} mkdir .kube 
+scp .kube/config kubeuser@${NODE_IP}:~/.kube/config
 

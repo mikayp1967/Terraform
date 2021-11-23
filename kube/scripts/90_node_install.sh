@@ -3,7 +3,7 @@
 
 sudo apt-get update
 sudo hostnamectl set-hostname node1
-sudo apt install -y net-tools sysstat
+sudo apt install -y net-tools sysstat jq
 
 
 # Install docker
@@ -41,13 +41,6 @@ sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
 sudo apt-get update
 
 
-# Install/config AWS
-sudo apt install -y awscli
-cat  >  ~/.aws/config <<EOF
-[default]
-region = eu-west-2
-EOF
-
 # Configure user so CP can ssh across
 sudo groupadd -g 1200 kubegroup
 sudo useradd -g 1200 -u 1200 -d /home/kubeuser -m -s /bin/bash kubeuser
@@ -59,6 +52,13 @@ sudo usermod -a -G docker kubeuser
 sudo chmod 700 ~kubeuser/.ssh
 sudo chmod 600 ~kubeuser/.ssh/*
 sudo chmod 644 ~kubeuser/.ssh/id_rsa.pub
+
+# Install/config AWS
+sudo apt install -y awscli
+cat  >  ~kubeuser/.aws/config <<EOF
+[default]
+region = eu-west-2
+EOF
 
 
 # Add kube packages
