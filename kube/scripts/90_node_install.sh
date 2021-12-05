@@ -69,3 +69,6 @@ kubeadm version && kubelet --version && kubectl version
 sudo usermod -a -G admin kubeuser
 echo "kubeuser        ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
+# Configure for git
+sudo -u kubeuser git config --global user.email "mikayp1967@gmail.com" 
+sudo -u kubeuser   git config --global user.name "Michele Pietrantonio"

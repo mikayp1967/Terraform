@@ -95,3 +95,6 @@ sleep 60
 ssh kubeuser@${NODE_IP} mkdir .kube 
 scp .kube/config kubeuser@${NODE_IP}:~/.kube/config
 
+# Configure for git
+sudo -u kubeuser git config --global user.email "mikayp1967@gmail.com" 
+sudo -u kubeuser   git config --global user.name "Michele Pietrantonio"
