@@ -62,7 +62,13 @@ resource "aws_iam_role" "NODE_IAM_S3" {
           Effect = "Allow"
           #Resource = "arn:aws:s3:::key-store-bucket-390490349038000/*"
           Resource = format("arn:aws:s3:::%s/*", var.key_bucket)
+        },
+        {
+          Action = ["ec2:CreateVolume","ec2:AttachVolume","ec2:DetachVolume","ec2:DeleteVolume"]
+          Effect = "Allow"
+          Resource = "*"
         }
+
       ]
     })
   }
