@@ -72,3 +72,7 @@ echo "kubeuser        ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 # Configure for git
 sudo -u kubeuser git config --global user.email "mikayp1967@gmail.com" 
 sudo -u kubeuser   git config --global user.name "Michele Pietrantonio"
+
+# Join cluster
+chmod 755 ./join-cluster.sh
+sudo ./join-cluster.sh
