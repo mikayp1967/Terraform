@@ -88,12 +88,15 @@ sudo chown  kubeuser:kubegroup ~kubeuser/calico.yaml
 sudo su - kubeuser -c "kubectl apply -f calico.yaml"
 
 # Copy kube config file over (should make new one but meh...) and need to find the IP for it doh!
-NODE_IP=$(aws ec2 describe-instances --filters Name=tag:Name,Values=NODE1|jq '.Reservations[].Instances[0].PrivateIpAddress')
 # Test if node is up and running yet - bodge for now
 # aws ec2 describe-instances --filters Name=tag:Name,Values=NODE1|jq '.Reservations[].Instances[0].State.Name'
 sleep 60
+NODE_IP=$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Name,Values=NODE1|jq -r '.Reservations[].Instances[0].PrivateIpAddress')
 ssh kubeuser@${NODE_IP} mkdir .kube 
 scp .kube/config kubeuser@${NODE_IP}:~/.kube/config
+cat /kube-join-command|grep "kubeadm join\|discovery-token" > /tmp/join-cluster.sh
+scp /tmp/join-cluster.sh kubeuser@${NODE_IP}:~
+
 
 # Configure for git
 sudo -u kubeuser git config --global user.email "mikayp1967@gmail.com" 
