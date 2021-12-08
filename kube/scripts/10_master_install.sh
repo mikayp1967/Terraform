@@ -74,7 +74,7 @@ sudo kubeadm init --pod-network-cidr=192.168.0.0/24 --ignore-preflight-errors=al
 
 sudo mkdir -p ~kubeuser/.kube
 sudo cp -i /etc/kubernetes/admin.conf ~kubeuser/.kube/config
-sudo chown kubeuser:kubegroup ~kubeuser/.kube/config
+sudo chown -R kubeuser:kubegroup ~kubeuser/.kube
 
 # Give kubeuser sudo
 sudo usermod -a -G admin kubeuser
