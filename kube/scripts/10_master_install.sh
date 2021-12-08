@@ -87,17 +87,34 @@ sudo chown  kubeuser:kubegroup ~kubeuser/calico.yaml
 # Changed pod network to 192... on kubeadm init so no need to edit it in the file...
 sudo su - kubeuser -c "kubectl apply -f calico.yaml"
 
+# Configure for git
+sudo -u kubeuser git config --global user.email "mikayp1967@gmail.com" 
+sudo -u kubeuser   git config --global user.name "Michele Pietrantonio"
+
+
 # Copy kube config file over (should make new one but meh...) and need to find the IP for it doh!
-# Test if node is up and running yet - bodge for now
-# aws ec2 describe-instances --filters Name=tag:Name,Values=NODE1|jq '.Reservations[].Instances[0].State.Name'
+
+# Do upto 15 loops of checking for running instance with a 10s delay - close to 3 mins
+for loop in `seq 1 15`; do
+    NODE_STATE=$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Name,Values=NODE1|jq -r '.Reservations[].Instances[] | select (.State.Name == "running" )|.State.Name')
+    if [ "${NODE_STATE}" = "running" ]; then
+        break
+    fi
+    sleep 10                    # Yes, delay AFTER the node is running - lets give it that extra 10s
+done
+# Still got timing delays while node does its startup stuff so give it another 60s
 sleep 60
-NODE_IP=$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Name,Values=NODE1|jq -r '.Reservations[].Instances[0].PrivateIpAddress')
-ssh kubeuser@${NODE_IP} mkdir .kube 
+
+
+NODE_IP=$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Name,Values=NODE1|jq -r '.Reservations[].Instances[]| select (.State.Name == "running" )|.PrivateIpAddress')
+
+# aws ec2 describe-instances --instance-id=i-0656cd0e18c228257|jq '.Reservations[].Instances[].State.Name'
+
+# looking at the remote node it gets sorted about 2 mins later still
+# Prob need to do ssh login and check the error return
+
+ssh -o "StrictHostKeyChecking=no" kubeuser@${NODE_IP} mkdir .kube 
 scp .kube/config kubeuser@${NODE_IP}:~/.kube/config
 cat /kube-join-command|grep "kubeadm join\|discovery-token" > /tmp/join-cluster.sh
 scp /tmp/join-cluster.sh kubeuser@${NODE_IP}:~
 
-
-# Configure for git
-sudo -u kubeuser git config --global user.email "mikayp1967@gmail.com" 
-sudo -u kubeuser   git config --global user.name "Michele Pietrantonio"
