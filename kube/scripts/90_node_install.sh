@@ -57,11 +57,12 @@ EOF
 sudo chown -R kubeuser:kubegroup  ~kubeuser/.aws
 
 sudo aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa.pub ~kubeuser/.ssh/authorized_keys
+sudo aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa ~kubeuser/.ssh/id_rsa
 sudo chown -R kubeuser:kubegroup ~kubeuser/.ssh
 sudo usermod -a -G docker kubeuser
 sudo chmod 700 ~kubeuser/.ssh
 sudo chmod 600 ~kubeuser/.ssh/*
-sudo chmod 644 ~kubeuser/.ssh/id_rsa.pub
+# sudo chmod 644 ~kubeuser/.ssh/id_rsa.pub
 
 
 # Add kube packages
@@ -77,5 +78,16 @@ sudo -u kubeuser git config --global user.email "mikayp1967@gmail.com"
 sudo -u kubeuser   git config --global user.name "Michele Pietrantonio"
 
 # Join cluster
-chmod 755 ./join-cluster.sh
-sudo ./join-cluster.sh
+# This needs fixing to get the CP IP
+sudo cat > ~kubeuser/join_cluster.sh <<EOF
+#!/bin/bash
+MAST_IP=10.0.1.148 
+JOINCMD=$(ssh  -o "StrictHostKeyChecking=no"  kubeuser@${MAST_IP} kubeadm token create --print-join-command)
+sudo ${JOINCMD}
+mkdir ~/.kube
+scp kubeuser@${MASTER_IP}:~/.kube/config ~/.kube/config
+EOF
+
+sudo chmod 755  ~kubeuser/join_cluster.sh
+sudo -u kubeuser ~kubeuser/join_cluster.sh
+

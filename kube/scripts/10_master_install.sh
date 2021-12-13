@@ -57,7 +57,7 @@ sudo usermod -a -G docker kubeuser
 sudo chown -R kubeuser:kubegroup ~kubeuser/.ssh
 sudo chmod 700 ~kubeuser/.ssh
 sudo chmod 600 ~kubeuser/.ssh/id_rsa
-aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa.pub ~/.ssh/id_rsa
+aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa.pub ~kubeuser/.ssh/id_rsa.pub
 chmod 600 ~/.ssh/id_rsa
 
 
