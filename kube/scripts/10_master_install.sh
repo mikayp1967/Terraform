@@ -52,11 +52,13 @@ EOF
 sudo groupadd -g 1200 kubegroup
 sudo useradd -g 1200 -u 1200 -d /home/kubeuser -m -s /bin/bash kubeuser
 sudo mkdir ~kubeuser/.ssh
+
 sudo aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa ~kubeuser/.ssh/id_rsa
 sudo usermod -a -G docker kubeuser
 #sudo chown -R kubeuser:kubegroup ~kubeuser/.ssh
 aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa.pub ~kubeuser/.ssh/id_rsa.pub
 aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa.pub ~kubeuser/.ssh/authorized_keys
+
 sudo chmod 700 ~kubeuser/.ssh
 sudo chmod 600 ~kubeuser/.ssh/*
 sudo chown -R kubeuser:kubegroup ~kubeuser/.ssh
