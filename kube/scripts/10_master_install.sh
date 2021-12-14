@@ -3,7 +3,7 @@
 
 sudo apt-get update
 sudo hostnamectl set-hostname master-node
-sudo apt install -y net-tools sysstat jq
+sudo apt install -y net-tools sysstat jq etcd-client
 
 
 # Install docker
