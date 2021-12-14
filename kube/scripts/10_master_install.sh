@@ -52,14 +52,16 @@ EOF
 sudo groupadd -g 1200 kubegroup
 sudo useradd -g 1200 -u 1200 -d /home/kubeuser -m -s /bin/bash kubeuser
 sudo mkdir ~kubeuser/.ssh
-sudo aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa.pub ~kubeuser/.ssh/authorized_keys
-sudo aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa.pub ~kubeuser/.ssh/id_rsa.pub
-sudo aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa ~kubeuser/.ssh/id_rsasudo usermod -a -G docker kubeuser
-sudo chown -R kubeuser:kubegroup ~kubeuser/
+
+sudo aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa ~kubeuser/.ssh/id_rsa
+sudo usermod -a -G docker kubeuser
+#sudo chown -R kubeuser:kubegroup ~kubeuser/.ssh
+aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa.pub ~kubeuser/.ssh/id_rsa.pub
+aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa.pub ~kubeuser/.ssh/authorized_keys
+
 sudo chmod 700 ~kubeuser/.ssh
-sudo chmod 600 ~kubeuser/.ssh/id_rsa
-aws s3  cp s3://key-store-bucket-390490349038000/kube-project-keys/id_rsa.pub ~/.ssh/id_rsa
-chmod 600 ~/.ssh/id_rsa
+sudo chmod 600 ~kubeuser/.ssh/*
+sudo chown -R kubeuser:kubegroup ~kubeuser/.ssh
 
 
 
@@ -111,11 +113,5 @@ NODE_IP=$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Name,
 
 # aws ec2 describe-instances --instance-id=i-0656cd0e18c228257|jq '.Reservations[].Instances[].State.Name'
 
-# looking at the remote node it gets sorted about 2 mins later still
-# Prob need to do ssh login and check the error return
 
-ssh -o "StrictHostKeyChecking=no" kubeuser@${NODE_IP} mkdir .kube 
-scp .kube/config kubeuser@${NODE_IP}:~/.kube/config
-cat /kube-join-command|grep "kubeadm join\|discovery-token" > /tmp/join-cluster.sh
-scp /tmp/join-cluster.sh kubeuser@${NODE_IP}:~
 

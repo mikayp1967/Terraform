@@ -63,7 +63,7 @@ sudo chown -R kubeuser:kubegroup ~kubeuser/.ssh
 sudo usermod -a -G docker kubeuser
 sudo chmod 700 ~kubeuser/.ssh
 sudo chmod 600 ~kubeuser/.ssh/*
-sudo chmod 644 ~kubeuser/.ssh/id_rsa.pub
+# sudo chmod 644 ~kubeuser/.ssh/id_rsa.pub
 
 
 # Add kube packages
@@ -78,5 +78,16 @@ echo "kubeuser        ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 sudo -u kubeuser git config --global user.email "mikayp1967@gmail.com" 
 sudo -u kubeuser   git config --global user.name "Michele Pietrantonio"
 
-# Join cluster - going to change this to request a token and join remotely. 
+# Join cluster
+# This needs fixing to get the CP IP
+cat <<EOF|sudo -u kubeuser tee ~kubeuser/join_cluster.sh
+#!/bin/bash
+MAST_IP=\$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Name,Values=CP1|jq -r '.Reservations[].Instances[]| select (.State.Name == "running" )|.PrivateIpAddress')
+JOINCMD=\$(ssh -o "StrictHostKeyChecking=no" kubeuser@\${MAST_IP} kubeadm token create --print-join-command)
+sudo \${JOINCMD}
+mkdir ~/.kube
+scp kubeuser@\${MAST_IP}:~/.kube/config ~/.kube/config
+EOF
+
+sudo chmod 755  ~kubeuser/join_cluster.sh
 
