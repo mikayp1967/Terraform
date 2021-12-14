@@ -14,8 +14,6 @@ module "ec2_instance" {
   subnet_id              = element(module.K8_VPC.subnets, 0)
   iam_instance_profile   = aws_iam_instance_profile.Kube_S3_profile.name
   user_data              = file("scripts/10_master_install.sh")
-# This should get removed once I resolve the CP IP on the nodes.
-  private_ip             = "10.0.1.8"
 
 
   tags = {

@@ -2,7 +2,7 @@
 # user_data for CP master node
 
 sudo apt-get update
-sudo hostnamectl set-hostname node1
+# sudo hostnamectl set-hostname node1
 
 
 sudo apt install -y net-tools sysstat jq
@@ -90,4 +90,4 @@ scp kubeuser@\${MAST_IP}:~/.kube/config ~/.kube/config
 EOF
 
 sudo chmod 755  ~kubeuser/join_cluster.sh
-
+sudo -u kubeuser ~kubeuser/join_cluster.sh
