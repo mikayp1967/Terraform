@@ -79,15 +79,14 @@ sudo -u kubeuser   git config --global user.name "Michele Pietrantonio"
 
 # Join cluster
 # This needs fixing to get the CP IP
-sudo cat > ~kubeuser/join_cluster.sh <<EOF
+cat <<EOF|sudo -u kubeuser tee ~kubeuser/join_cluster.sh
 #!/bin/bash
-MAST_IP=10.0.1.148 
-JOINCMD=$(ssh  -o "StrictHostKeyChecking=no"  kubeuser@${MAST_IP} kubeadm token create --print-join-command)
-sudo ${JOINCMD}
+MAST_IP=\$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Name,Values=CP1|jq -r '.Reservations[].Instances[]| select (.State.Name == "running" )|.PrivateIpAddress')
+JOINCMD=\$(ssh -o "StrictHostKeyChecking=no" kubeuser@\${MAST_IP} kubeadm token create --print-join-command)
+sudo \${JOINCMD}
 mkdir ~/.kube
-scp kubeuser@${MASTER_IP}:~/.kube/config ~/.kube/config
+scp kubeuser@\${MAST_IP}:~/.kube/config ~/.kube/config
 EOF
 
 sudo chmod 755  ~kubeuser/join_cluster.sh
-sudo -u kubeuser ~kubeuser/join_cluster.sh
 
