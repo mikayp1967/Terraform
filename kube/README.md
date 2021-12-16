@@ -18,6 +18,7 @@ happens once the cluster is up will go in a different location
 * Add an S3 for certs (created outside TF but IAM role created)
 * Node should successfully join the cluster now
 * Installed etcdctl, gonna put backup script in the kube repo...
+* Change runtime form docker to containerd
 
 
 ## To Do
