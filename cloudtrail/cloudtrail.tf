@@ -1,8 +1,8 @@
 data "aws_caller_identity" "current" {}
 
 resource "aws_cloudtrail" "my-trail" {
-  name                          = "tf-trail-foobar"
-  s3_bucket_name                = aws_s3_bucket.foo.id
+  name                          = "tf-trail-my-trail"
+  s3_bucket_name                = aws_s3_bucket.trail-log.id
   s3_key_prefix                 = "prefix"
   include_global_service_events = false
 }
@@ -41,6 +41,10 @@ resource "aws_s3_bucket" "trail-log" {
     ]
 }
 POLICY
+    logging {
+        target_bucket = aws_s3_bucket.trail-log-logging.id
+        target_prefix = "trails/"
+      }
 }
 
 
@@ -49,8 +53,3 @@ resource "aws_s3_bucket" "trail-log-logging" {
   force_destroy = true
 }
 
-resource "aws_s3_bucket_logging" "example" {
-  bucket = aws_s3_bucket.trail-log.id
-  target_bucket = aws_s3_bucket.trail-log-logging-1234512345.id
-  target_prefix = "trails/"
-}
