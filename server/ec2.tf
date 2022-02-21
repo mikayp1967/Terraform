@@ -19,6 +19,7 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "my-ec2" {
   ami                  = data.aws_ami.ubuntu.id
   instance_type        = "t3.micro"
+  key_name             = var.key_name
   iam_instance_profile = aws_iam_instance_profile.EC2_S3_profile.name
   tags = {
     Name      = "test-ec2"
@@ -26,18 +27,6 @@ resource "aws_instance" "my-ec2" {
   }
 }
 
-
-
-resource "aws_s3_bucket" "bucket1" {
-  bucket = "tf-test-bucket-919029"
-  acl    = "private"
-
-  tags = {
-    Name        = "My bucket"
-    Terraform   = "True"
-    Environment = "Dev"
-  }
-}
 
 
 resource "aws_iam_role" "EC2_IAM_S3" {
@@ -76,4 +65,12 @@ resource "aws_iam_role" "EC2_IAM_S3" {
 resource "aws_iam_instance_profile" "EC2_S3_profile" {
   name = "EC2_S3_profile"
   role = aws_iam_role.EC2_IAM_S3.name
+}
+
+
+# Add EIP
+
+resource "aws_eip" "ec2_eip" {
+  vpc      = false
+  instance = aws_instance.my-ec2.id
 }
