@@ -39,3 +39,8 @@ https://adamtheautomator.com/install-kubernetes-ubuntu/
 https://www.howtoforge.com/setup-a-kubernetes-cluster-on-aws-ec2-instance-ubuntu-using-kubeadm/
 https://www.fosstechnix.com/how-to-install-kubernetes-cluster-on-ubuntu/
 https://linuxconfig.org/how-to-install-kubernetes-on-ubuntu-20-04-focal-fossa-linux
+
+
+## Usage
+
+Log in to master node as kubeuser where kubectl is configured.
