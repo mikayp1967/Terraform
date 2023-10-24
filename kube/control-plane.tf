@@ -19,7 +19,8 @@ module "ec2_instance" {
   tags = {
     Terraform = "true"
     Project   = var.project
-  Role = "Control-Plane" }
+    Role = "Control-Plane" 
+  }
 }
 
 
