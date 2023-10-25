@@ -79,6 +79,11 @@ echo "kubeuser        ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 sudo -u kubeuser git config --global user.email "mikayp1967@gmail.com" 
 sudo -u kubeuser   git config --global user.name "Michele Pietrantonio"
 
+# Install nerdctl
+export NERD_VER=1.6.2
+wget -O /tmp/nerdctl.gz https://github.com/containerd/nerdctl/releases/download/v${NERD_VER}/nerdctl-${NERD_VER}-linux-amd64.tar.gz
+sudo tar Cxzvvf /usr/local/bin /tmp/nerdctl.gz
+
 # ----- Join cluster
 cat <<EOF|sudo -u kubeuser tee ~kubeuser/join_cluster.sh
 #!/bin/bash
