@@ -24,7 +24,6 @@ module "ec2_instance" {
 }
 
 
-
 resource "aws_eip" "cp_eip" {
   vpc      = true
   instance = module.ec2_instance.id
@@ -34,7 +33,6 @@ resource "aws_eip" "cp_eip" {
 output "CP_ip" {
   value = aws_eip.cp_eip.public_ip
 }
-
 
 
 # Create role for EC2 and attach relevant policies

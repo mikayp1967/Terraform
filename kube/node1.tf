@@ -29,10 +29,6 @@ module "Node_instance" {
 }
 
 
-
-
-
-
 # Create role for EC2 and attach relevant policies
 resource "aws_iam_role" "NODE_IAM_S3" {
   name = "Kube_Node_IAM_Role"
@@ -79,6 +75,7 @@ resource "aws_iam_role" "NODE_IAM_S3" {
   }
 }
 
+
 resource "aws_iam_instance_profile" "Kube_Node_profile" {
   name = "Kube_Node_profile"
   role = aws_iam_role.NODE_IAM_S3.name
@@ -90,6 +87,7 @@ output "node_IP" {
   value       = module.Node_instance.private_ip
 }
 
+
 resource "aws_eip" "node_eip" {
   vpc      = true
   instance = module.Node_instance.id
@@ -99,5 +97,3 @@ resource "aws_eip" "node_eip" {
 output "Node_ip" {
   value = aws_eip.node_eip.public_ip
 }
-
-
