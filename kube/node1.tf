@@ -11,7 +11,7 @@ module "Node_instance" {
 
   name = "NODE1"
 
-  ami                    = data.aws_ami.ubuntu.id
+  ami                    = var.ec2_ami != "" ? var.ec2_ami : data.aws_ami.ubuntu.id
   instance_type          = "t3.micro"
   key_name               = var.key_name
   vpc_security_group_ids = [module.K8_VPC.default_security_group_id]

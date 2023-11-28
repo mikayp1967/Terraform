@@ -42,3 +42,9 @@ variable "aws_region" {
   type        = string
   default     = "eu-west-1"
 }
+
+variable "ec2_ami" {
+  description = "If unset we use the newest ubuntu AMI, which causes problems when redoing the plan. This is an override"
+  type        = string
+  default     = "ami-078f82f56edf58f64"
+}
