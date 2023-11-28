@@ -97,10 +97,6 @@ resource "aws_subnet" "subnets_priv" {
 
 resource "aws_route_table" "subnet_priv_rt" {
   vpc_id = module.K8_VPC.vpc_id
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_gateway.id
-  }
   lifecycle {
     ignore_changes = [
       tags["CreatedDate"]

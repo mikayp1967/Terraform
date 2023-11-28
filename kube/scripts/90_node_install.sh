@@ -85,9 +85,9 @@ cat <<EOF|sudo -u kubeuser tee ~kubeuser/join_cluster.sh
 MAST_IP=\$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Name,Values=CP1|jq -r '.Reservations[].Instances[]| select (.State.Name == "running" )|.PrivateIpAddress')
 JOINCMD=\$(ssh -o "StrictHostKeyChecking=no" kubeuser@\${MAST_IP} kubeadm token create --print-join-command)
 sudo \${JOINCMD}
-mkdir ~/.kube
+mkdir -p ~/.kube
 scp kubeuser@\${MAST_IP}:~/.kube/config ~/.kube/config
 EOF
 
 sudo chmod 755  ~kubeuser/join_cluster.sh
-sudo -u kubeuser ~kubeuser/join_cluster.sh
+sudo -u kubeuser ~kubeuser/join_cluster.sh >  ~kubeuser/join_cluster.log
