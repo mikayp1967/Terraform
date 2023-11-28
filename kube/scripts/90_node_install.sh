@@ -29,6 +29,7 @@ sudo sysctl --system
 
 sudo apt-get update -y
 sudo apt-get install -y containerd
+mkdir /etc/containerd
 containerd config default | sudo tee /etc/containerd/config.toml
 
 
@@ -78,15 +79,20 @@ echo "kubeuser        ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 sudo -u kubeuser git config --global user.email "mikayp1967@gmail.com" 
 sudo -u kubeuser   git config --global user.name "Michele Pietrantonio"
 
+# Install nerdctl
+export NERD_VER=1.6.2
+wget -O /tmp/nerdctl.gz https://github.com/containerd/nerdctl/releases/download/v${NERD_VER}/nerdctl-${NERD_VER}-linux-amd64.tar.gz
+sudo tar Cxzvvf /usr/local/bin /tmp/nerdctl.gz
+
 # ----- Join cluster
 cat <<EOF|sudo -u kubeuser tee ~kubeuser/join_cluster.sh
 #!/bin/bash
 MAST_IP=\$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Name,Values=CP1|jq -r '.Reservations[].Instances[]| select (.State.Name == "running" )|.PrivateIpAddress')
 JOINCMD=\$(ssh -o "StrictHostKeyChecking=no" kubeuser@\${MAST_IP} kubeadm token create --print-join-command)
 sudo \${JOINCMD}
-mkdir ~/.kube
+mkdir -p ~/.kube
 scp kubeuser@\${MAST_IP}:~/.kube/config ~/.kube/config
 EOF
 
 sudo chmod 755  ~kubeuser/join_cluster.sh
-sudo -u kubeuser ~kubeuser/join_cluster.sh
+sudo -u kubeuser ~kubeuser/join_cluster.sh >  ~kubeuser/join_cluster.log

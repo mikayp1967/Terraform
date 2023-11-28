@@ -53,6 +53,8 @@ resource "aws_eip" "ngw_eip" {
 }
 
 
+/* Removed 26/10/2023
+
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.ngw_eip.id
   subnet_id     = element(module.K8_VPC.subnets, 0)
@@ -61,3 +63,5 @@ resource "aws_nat_gateway" "nat_gateway" {
     "Name"    = "NatGateway"
   }
 }
+
+*/

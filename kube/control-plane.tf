@@ -7,7 +7,7 @@ module "ec2_instance" {
 
   name = "CP1"
 
-  ami                    = data.aws_ami.ubuntu.id
+  ami                    = var.ec2_ami != "" ? var.ec2_ami : data.aws_ami.ubuntu.id
   instance_type          = "t3.small"
   key_name               = var.key_name
   vpc_security_group_ids = [module.K8_VPC.default_security_group_id]
@@ -19,9 +19,9 @@ module "ec2_instance" {
   tags = {
     Terraform = "true"
     Project   = var.project
-  Role = "Control-Plane" }
+    Role = "Control-Plane" 
+  }
 }
-
 
 
 resource "aws_eip" "cp_eip" {
@@ -33,7 +33,6 @@ resource "aws_eip" "cp_eip" {
 output "CP_ip" {
   value = aws_eip.cp_eip.public_ip
 }
-
 
 
 # Create role for EC2 and attach relevant policies

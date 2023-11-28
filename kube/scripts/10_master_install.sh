@@ -67,7 +67,7 @@ echo "kubeuser        ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # Install Calico
 # Changed pod network to 192... on kubeadm init so no need to edit it in the file...
-curl https://docs.projectcalico.org/manifests/calico.yaml -O
+curl -L https://docs.projectcalico.org/manifests/calico.yaml -O
 mv calico.yaml ~kubeuser/calico.yaml
 sudo chown  kubeuser:kubegroup ~kubeuser/calico.yaml
 sudo su - kubeuser -c "kubectl apply -f calico.yaml"
@@ -76,6 +76,10 @@ sudo su - kubeuser -c "kubectl apply -f calico.yaml"
 sudo -u kubeuser git config --global user.email "mikayp1967@gmail.com" 
 sudo -u kubeuser   git config --global user.name "Michele Pietrantonio"
 
+# Install nerdctl
+export NERD_VER=1.6.2
+wget -O /tmp/nerdctl.gz https://github.com/containerd/nerdctl/releases/download/v${NERD_VER}/nerdctl-${NERD_VER}-linux-amd64.tar.gz
+sudo tar Cxzvvf /usr/local/bin /tmp/nerdctl.gz
 
 # Copy kube config file over (should make new one but meh...) and need to find the IP for it doh!
 
